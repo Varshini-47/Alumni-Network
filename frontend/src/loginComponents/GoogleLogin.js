@@ -2,26 +2,27 @@ import React, { useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useUser } from '../UserContext';  // Import the UserContext to use loginUser
+import { useUser } from "../UserContext";
 import { FcGoogle } from "react-icons/fc";
 
 const GoogleLoginButton = () => {
-  const [error, setError] = useState("");  // For handling any error
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { loginUser } = useUser(); // Access the loginUser function from UserContext
+  const { loginUser } = useUser();
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        // Get user info using Google token
-        const userInfoResponse = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-        });
+        const userInfoResponse = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+          }
+        );
 
         const { email, given_name, family_name } = userInfoResponse.data;
         console.log(email, given_name);
 
-        // Send user info to your Spring Boot backend
         const backendResponse = await axios.post(
           "http://localhost:8080/api/google-login",
           { email, firstName: given_name, lastName: family_name },
@@ -29,25 +30,20 @@ const GoogleLoginButton = () => {
         );
 
         if (backendResponse.data.newUser === true) {
-          // New user: navigate to the registration page.
           alert("Not registered yet. Moving to registration page.");
           navigate("/register");
         } else {
-          // User exists: store user in context and navigate to the alumni dashboard.
-          const { user } = backendResponse.data; // Retrieve the user data from the response
+          const { user } = backendResponse.data;
           loginUser({
             email: user.email,
             firstName: user.name,
             lastName: user.lastName,
-            role: user.role, // Assuming backend returns user role
+            role: user.role,
             imageUrl: user.imageUrl,
             batch: user.batch,
-          rollNo: user.rollNo,
-          department: user.department,
-            id:user.id,
-
-
-            
+            rollNo: user.rollNo,
+            department: user.department,
+            id: user.id,
           });
           navigate("/");
         }
@@ -64,15 +60,13 @@ const GoogleLoginButton = () => {
 
   return (
     <div>
-     
-
-       <button
-                        onClick={ googleLogin}
-                        className="w-full flex items-center justify-center bg-red-400 text-white p-2 rounded hover:bg-red-600 mt-2"
-                      >
-                        <FcGoogle className="text-xl mr-2" /> Sign in with Google
-                      </button>
-      {error && <p className="text-red-500 mt-2">{error}</p>} {/* Display error message if any */}
+      <button
+        onClick={googleLogin}
+        className="w-full flex items-center justify-center bg-red-400 text-white p-2 rounded hover:bg-red-600 mt-2"
+      >
+        <FcGoogle className="text-xl mr-2" /> Log in with Google
+      </button>
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 };

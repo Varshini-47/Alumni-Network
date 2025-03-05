@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .successHandler(oauth2LoginSuccessHandler)  // Set the success handler
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/register", "/api/login", "/api/google-login", "/api/complete-profile", "/api/logout").permitAll()  // Public access to specific endpoints
+                .requestMatchers("/api/register", "/api/login", "/api/google-login", "/api/complete-profile", "/api/logout","/api/email/reset-password","/api/email/forgot-password").permitAll()  // Public access to specific endpoints
                 .anyRequest().authenticated()  // Secure all other requests
             );
 
