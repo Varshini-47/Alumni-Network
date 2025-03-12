@@ -22,7 +22,9 @@ import JobOpportunities from "./pages/JobOpportunities";
 import AlumniList from "./pages/Alumni";
 import Gallery from "./pages/Gallery";
 import Events from "./pages/Events";
-
+import UpdateProfile from "./pages/UpdateProfile";
+import EditWorkExperienceForm from "./pages/EditWorkExperienceForm";
+import EditAchievementForm from "./pages/EditAchievementForm";
 import SearchResults from "./pages/SearchResults";
 
 function App() {
@@ -58,6 +60,9 @@ function App() {
       <Route path="/gallery" element={<Gallery />} />
       <Route path="/events" element={<Events />} />
       <Route path="/search" element={<SearchResults />} />
+      <Route path="/update-profile" element={<UpdateProfile/>}/>
+        <Route path="/edit-work/:id" element={<EditWorkExperienceForm/>}/>
+        <Route path="/edit-achievement/:id" element={<EditAchievementForm/>}/>
     </Routes>
   );
 }
