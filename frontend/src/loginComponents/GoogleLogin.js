@@ -21,8 +21,6 @@ const GoogleLoginButton = () => {
         );
 
         const { email, given_name, family_name } = userInfoResponse.data;
-        console.log(email, given_name);
-
         const backendResponse = await axios.post(
           "http://localhost:8080/api/google-login",
           { email, firstName: given_name, lastName: family_name },
@@ -44,6 +42,7 @@ const GoogleLoginButton = () => {
             rollNo: user.rollNo,
             department: user.department,
             id: user.id,
+            profileType: user.profileType,
           });
           navigate("/");
         }
@@ -64,7 +63,7 @@ const GoogleLoginButton = () => {
         onClick={googleLogin}
         className="w-full flex items-center justify-center bg-red-400 text-white p-2 rounded hover:bg-red-600 mt-2"
       >
-        <FcGoogle className="text-xl mr-2" /> Log in with Google
+        <FcGoogle className="text-xl mr-2" /> Sign in with Google
       </button>
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>

@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../UserContext";
-import alumniImage from "../assets/alumni.png";
 import GoogleLoginButton from "../loginComponents/GoogleLogin";
+import nitcImage from "../assets/NIT-calicut-1024x576.webp";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const navigate = useNavigate();
   const { loginUser } = useUser();
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [resetMessage, setResetMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +23,7 @@ function Login() {
         { email, password },
         { withCredentials: true }
       );
+
       if (response.status === 200) {
         const userData = response.data;
         loginUser({
@@ -36,6 +38,7 @@ function Login() {
           id: userData.id,
           profileType: userData.profileType,
         });
+
         navigate("/");
       }
     } catch (error) {
@@ -61,26 +64,22 @@ function Login() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Left Side: Image */}
-      <div className="w-1/2 flex items-center justify-center">
-        <img
-          src={alumniImage}
-          alt="Alumni"
-          className="w-3/4 h-auto rounded-lg shadow-lg"
-        />
-      </div>
-
-      {/* Right Side: Login Form */}
-      <div className="w-1/2 flex flex-col items-center justify-center p-10">
+    <div
+      className="min-h-screen flex items-center justify-center p-6 relative bg-cover bg-center"
+      style={{ backgroundImage: `url(${nitcImage})` }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-10 backdrop-blur-sm"></div>
+      <div className="relative bg-white/80 backdrop-blur-lg p-8 rounded-xl shadow-xl w-96 max-w-lg border border-gray-200 z-10">
         {!isForgotPassword ? (
-          <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-            <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
-            <form onSubmit={handleSubmit}>
+          <>
+            <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
+              Login
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full mb-4 p-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -88,60 +87,65 @@ function Login() {
               <input
                 type="password"
                 placeholder="Password"
-                className="w-full mb-4 p-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
               {errorMessage && (
-                <p className="text-red-500 mb-4">{errorMessage}</p>
+                <p className="text-red-500 text-sm">{errorMessage}</p>
               )}
               <button
                 type="submit"
-                className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white p-3 rounded-lg text-lg font-bold shadow-md hover:scale-105 transition-transform duration-200"
               >
                 Login
               </button>
             </form>
             <p
-              className="mt-2 text-green-500 cursor-pointer text-center"
+              className="mt-2 text-blue-600 cursor-pointer text-center hover:underline"
               onClick={() => setIsForgotPassword(true)}
             >
               Forgot Password?
             </p>
+
             <div className="mt-4 text-gray-500 text-center">OR</div>
 
-            <GoogleLoginButton />
-          </div>
+            <div className="mt-4 flex justify-center">
+              <GoogleLoginButton />
+            </div>
+          </>
         ) : (
-          <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-            <h2 className="text-2xl font-semibold text-center mb-4">
-              Forgot Password
+          <>
+            <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
+              Reset Password
             </h2>
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full mb-4 p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
             <button
               onClick={handleForgotPassword}
-              className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white p-3 rounded-lg text-lg font-bold shadow-md hover:scale-105 transition-transform duration-200 mt-5"
             >
               Send Reset Link
             </button>
+
             {resetMessage && (
-              <p className="mt-4 text-center text-green-500">{resetMessage}</p>
+              <p className="mt-4 text-center text-blue-600">{resetMessage}</p>
             )}
             <p
-              className="mt-2 text-green-500 cursor-pointer text-center"
+              className="mt-2 text-blue-600 cursor-pointer text-center hover:underline"
               onClick={() => setIsForgotPassword(false)}
             >
               Back to Login
             </p>
-          </div>
+          </>
         )}
       </div>
     </div>

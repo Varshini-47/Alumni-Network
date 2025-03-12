@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import uploadToCloudinary from "../cloudinaryupload";
-import alumniImage from "../assets/alumni.png";
+import nitcImage from "../assets/NIT-calicut-1024x576.webp";
 
 function CompleteProfile() {
   const [batch, setBatch] = useState("");
@@ -36,7 +36,7 @@ function CompleteProfile() {
       return alert("Batch must be a 4-digit year.");
     if (!/^[0-9]{10}$/.test(phoneno))
       return alert("Phone number must be exactly 10 digits.");
-    if (rollNo != "" && !/^[A-Za-z]\d{6}[A-Za-z]{2}$/.test(rollNo))
+    if (rollNo !== "" && !/^[A-Za-z]\d{6}[A-Za-z]{2}$/.test(rollNo))
       return alert("Invalid Roll Number format.");
 
     setUploading(true);
@@ -47,6 +47,7 @@ function CompleteProfile() {
     if (uploadedImageUrl) {
       setImageUrl(uploadedImageUrl);
     }
+
     const completeUser = {
       firstName: user.name,
       lastName: user.lastName,
@@ -74,47 +75,46 @@ function CompleteProfile() {
   };
 
   return (
-    <div className="flex items-center justify-center mt-100 mb-110 bg-gray-100 min-h-screen">
-      <div className="flex bg-white shadow-lg rounded-lg overflow-hidden w-3/4">
-        {/* Left Section - Image */}
-        <div className="w-1/2 flex items-center justify-center">
-          <img
-            src={alumniImage}
-            alt="Alumni"
-            className="w-3/4 h-auto rounded-lg shadow-lg"
-          />
-        </div>
+    <div
+      className="min-h-screen flex items-center justify-center p-6 relative bg-cover bg-center"
+      style={{ backgroundImage: `url(${nitcImage})` }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-10 backdrop-blur-sm"></div>
 
-        {/* Right Section - Form */}
-        <div className="w-1/2 p-10 flex flex-col justify-center">
-          <h2 className="text-2xl font-semibold mb-6 text-center">
-            Complete your profile
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="relative bg-white/80 backdrop-blur-lg p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200 z-10">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Complete Your Profile
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex space-x-4">
             <input
               type="text"
               value={user.name}
-              className="w-full p-2 border rounded"
+              className="w-1/2 p-2 border rounded"
               readOnly
             />
             <input
               type="text"
               value={user.lastName}
-              className="w-full p-2 border rounded"
+              className="w-1/2 p-2 border rounded"
               readOnly
             />
-            <input
-              type="email"
-              value={user.email}
-              className="w-full p-2 border rounded"
-              readOnly
-            />
+          </div>
+
+          <input
+            type="email"
+            value={user.email}
+            className="w-full p-2 border rounded"
+            readOnly
+          />
+
+          <div className="flex space-x-4">
             <input
               type="text"
               placeholder="Batch"
               value={batch}
               onChange={(e) => setBatch(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-1/2 p-2 border rounded"
               required
             />
             <input
@@ -122,53 +122,59 @@ function CompleteProfile() {
               placeholder="Phone No"
               value={phoneno}
               onChange={(e) => setPhoneno(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-1/2 p-2 border rounded"
               required
             />
+          </div>
+
+          <div className="flex space-x-4">
             <input
               type="text"
               placeholder="Roll Number"
               value={rollNo}
               onChange={(e) => setRollNo(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-1/2 p-2 border rounded"
             />
             <input
               type="text"
               placeholder="Department"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-1/2 p-2 border rounded"
               required
             />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
-              required
-            />
-            <select
-              value={profileType}
-              onChange={(e) => setProfileType(e.target.value)}
-              className="w-full p-2 border rounded"
-            >
-              <option value="PUBLIC">Public</option>
-              <option value="PRIVATE">Private</option>
-            </select>
-            <input
-              type="file"
-              className="w-full p-2 border rounded"
-              onChange={handleFileChange}
-            />
-            <button
-              type="submit"
-              className="w-full bg-green-500 text-white p-2 rounded-lg hover:bg-green-600"
-            >
-              {uploading ? "Uploading..." : "Submit"}
-            </button>
-          </form>
-        </div>
+          </div>
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-2 border rounded"
+            required
+          />
+
+          <select
+            value={profileType}
+            onChange={(e) => setProfileType(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            <option value="PUBLIC">Public</option>
+            <option value="PRIVATE">Private</option>
+          </select>
+
+          <input
+            type="file"
+            className="w-full p-2 border rounded"
+            onChange={handleFileChange}
+          />
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white p-3 rounded-lg text-lg font-bold shadow-md hover:scale-105 transition-transform duration-200 mt-5"
+          >
+            {uploading ? "Uploading..." : "Submit"}
+          </button>
+        </form>
       </div>
     </div>
   );

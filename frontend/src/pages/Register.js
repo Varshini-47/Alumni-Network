@@ -3,7 +3,16 @@ import { useState } from "react";
 import axios from "axios";
 import GoogleRegister from "../loginComponents/GoogleRegister";
 import uploadToCloudinary from "../cloudinaryupload";
-import loginImage from "../assets/alumni.png";
+import nitcImage from "../assets/NIT-calicut-1024x576.webp";
+import {
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaPhone,
+  FaGraduationCap,
+  FaIdBadge,
+  FaUniversity,
+} from "react-icons/fa";
 
 function Register() {
   const [name, setName] = useState("");
@@ -19,39 +28,26 @@ function Register() {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  const handleFileChange = (e) => setImage(e.target.files[0]);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert("Please enter a valid email address.");
       return;
     }
 
-    // Phone validation (10 digits)
     if (!/^\d{10}$/.test(phone)) {
       alert("Phone number must be exactly 10 digits.");
       return;
     }
 
-    // Batch validation (4-digit year)
     if (!/^\d{4}$/.test(batch)) {
       alert("Batch must be a 4-digit year.");
-      return;
-    }
-
-    // Roll Number validation (1 letter, 6 digits, 2 letters)
-    if (rollNo != "" && !/^[A-Za-z]\d{6}[A-Za-z]{2}$/.test(rollNo)) {
-      alert(
-        "Roll Number must be in the format: 1 letter, 6 digits, 2 letters."
-      );
       return;
     }
 
@@ -87,133 +83,162 @@ function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center mt-100 mb-110 bg-gray-100 min-h-screen">
-      <div className="flex bg-white shadow-lg rounded-lg overflow-hidden w-3/4">
-        {/* Left Side - Image */}
-        <div className="w-1/2 flex items-center justify-center">
-          <img
-            src={loginImage}
-            alt="Alumni"
-            className="w-3/4 h-auto rounded-lg shadow-lg"
-          />
-        </div>
+    <div
+      className="min-h-screen flex items-center justify-center p-6 relative bg-cover bg-center"
+      style={{ backgroundImage: `url(${nitcImage})` }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-10 backdrop-blur-sm"></div>
 
-        {/* Right Side - Form */}
-        <div className="w-1/2 p-10 flex flex-col justify-center">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
+      <div className="relative bg-white/80 backdrop-blur-lg p-8 rounded-xl shadow-xl w-full max-w-lg border border-gray-200 z-10">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Register
+        </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              placeholder="First Name"
-              className="w-full p-2 border rounded"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              className="w-full p-2 border rounded"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex space-x-4">
+            <div className="relative w-1/2">
+              <FaUser className="absolute left-3 top-3 text-gray-500" />
+              <input
+                type="text"
+                placeholder="First Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
+                required
+              />
+            </div>
+            <div className="relative w-1/2">
+              <FaUser className="absolute left-3 top-3 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-3 text-gray-500" />
             <input
               type="email"
               placeholder="Email"
-              className="w-full p-2 border rounded"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
               required
             />
+          </div>
+
+          <div className="relative">
+            <FaLock className="absolute left-3 top-3 text-gray-500" />
             <input
               type="password"
               placeholder="Password"
-              className="w-full p-2 border rounded"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
               required
             />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              className="w-full p-2 border rounded"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Batch (e.g., 2025)"
-              className="w-full p-2 border rounded"
-              value={batch}
-              onChange={(e) => setBatch(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Roll Number"
-              className="w-full p-2 border rounded"
-              value={rollNo}
-              onChange={(e) => setRollNo(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Department"
-              className="w-full p-2 border rounded"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-              required
-            />
-            <input
-              type="file"
-              className="w-full p-2 border rounded"
-              onChange={handleFileChange}
-            />
-
-            {/* Profile Type Selection */}
-            <div>
-              <label className="block text-gray-700">Profile Type:</label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="PUBLIC"
-                    checked={profileType === "PUBLIC"}
-                    onChange={() => setProfileType("PUBLIC")}
-                    className="mr-2"
-                  />
-                  Public
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="PRIVATE"
-                    checked={profileType === "PRIVATE"}
-                    onChange={() => setProfileType("PRIVATE")}
-                    className="mr-2"
-                  />
-                  Private
-                </label>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-            >
-              Register
-            </button>
-          </form>
-
-          {/* OR Divider */}
-          <div className="mt-4 text-gray-500 text-center">OR</div>
-
-          {/* Google & LinkedIn Register Buttons */}
-          <div className="flex flex-col items-center space-y-2 mt-4">
-            <GoogleRegister />
           </div>
+
+          <div className="flex space-x-4">
+            <div className="relative w-1/2">
+              <FaPhone className="absolute left-3 top-3 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
+                required
+              />
+            </div>
+            <div className="relative w-1/2">
+              <FaGraduationCap className="absolute left-3 top-3 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Batch (e.g., 2025)"
+                value={batch}
+                onChange={(e) => setBatch(e.target.value)}
+                className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="flex space-x-4">
+            <div className="relative w-1/2">
+              <FaIdBadge className="absolute left-3 top-3 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Roll Number"
+                value={rollNo}
+                onChange={(e) => setRollNo(e.target.value)}
+                className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
+              />
+            </div>
+            <div className="relative w-1/2">
+              <FaUniversity className="absolute left-3 top-3 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Department"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="w-full pl-10 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
+                required
+              />
+            </div>
+          </div>
+
+          <input
+            type="file"
+            className="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition"
+            onChange={handleFileChange}
+          />
+
+          <div>
+            <label className="block text-gray-700 font-semibold">
+              Profile Type:
+            </label>
+            <div className="flex space-x-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="PUBLIC"
+                  checked={profileType === "PUBLIC"}
+                  onChange={() => setProfileType("PUBLIC")}
+                  className="mr-2"
+                />
+                Public
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="PRIVATE"
+                  checked={profileType === "PRIVATE"}
+                  onChange={() => setProfileType("PRIVATE")}
+                  className="mr-2"
+                />
+                Private
+              </label>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white p-3 rounded-lg text-lg font-bold shadow-md hover:scale-105 transition-transform duration-200"
+          >
+            {uploading ? "Uploading..." : "Register"}
+          </button>
+        </form>
+
+        <div className="mt-4 text-gray-500 text-center">OR</div>
+
+        <div className="flex flex-col items-center space-y-2 mt-4">
+          <GoogleRegister />
         </div>
       </div>
     </div>
