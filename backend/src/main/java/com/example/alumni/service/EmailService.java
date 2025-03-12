@@ -15,7 +15,6 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    
     public void sendResetEmail(String toEmail, String resetLink) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
@@ -23,7 +22,5 @@ public class EmailService {
         message.setText("Click the link to reset your password: " + resetLink);
         mailSender.send(message);
     }
-   
+
 }
-
-

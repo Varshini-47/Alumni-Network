@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -36,7 +38,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user, HttpSession session) {
@@ -63,23 +64,22 @@ public class UserController {
 
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
-        // If the user exists, add them to the session and return their details.
-        User user = userOptional.get();
-        session.setAttribute("user", user);
-        Map<String, Object> response = new HashMap<>();
-        response.put("user", user);
-        response.put("newUser", false);
-        return ResponseEntity.ok(response);
-       } else {
-        // User not found: do not create a new record.
-        // Return a response indicating the user is not registered.
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "User not registered");
-        response.put("newUser", true);
-        return ResponseEntity.ok(response);
-       }
+            // If the user exists, add them to the session and return their details.
+            User user = userOptional.get();
+            session.setAttribute("user", user);
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", user);
+            response.put("newUser", false);
+            return ResponseEntity.ok(response);
+        } else {
+            // User not found: do not create a new record.
+            // Return a response indicating the user is not registered.
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "User not registered");
+            response.put("newUser", true);
+            return ResponseEntity.ok(response);
+        }
     }
- 
 
     @GetMapping("/user-info")
     public ResponseEntity<?> getUserInfo(HttpSession session) {
@@ -128,14 +128,28 @@ public class UserController {
         user.setPhone(phoneno);
         user.setPassword(passwordEncoder.encode(password));
         user.setDepartment(
-            department
-        );
+                department);
         user.setImageUrl(imageUrl);
         userRepository.save(user);
 
         session.setAttribute("user", user);
 
         return ResponseEntity.ok("Profile completed successfully!");
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers()
+                .stream()
+                .filter(user -> !"admin".equalsIgnoreCase(user.getRole())) // Exclude admins
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/logout")

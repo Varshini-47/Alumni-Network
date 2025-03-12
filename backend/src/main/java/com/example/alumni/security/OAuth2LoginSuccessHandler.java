@@ -24,42 +24,40 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException {
         // Retrieve the OAuth2 user details
         OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oauthUser.getAttributes();
         System.out.println(attributes);
         String email = (String) attributes.get("email"); // Get email from OAuth2 attributes
-        String given_name = (String) attributes.get("given_name"); 
-        String last_name = (String) attributes.get("family_name"); 
+        String given_name = (String) attributes.get("given_name");
+        String last_name = (String) attributes.get("family_name");
 
         // Check if the user exists in the database using the email
         User existingUser = userRepository.findByEmail(email).orElse(null);
 
-        HttpSession session = request.getSession();  // Get the HTTP session
+        HttpSession session = request.getSession(); // Get the HTTP session
         if (existingUser != null) {
             // If user exists, store the user in the session
             session.setAttribute("user", existingUser);
-            response.sendRedirect("http://localhost:3000/login");  // Redirect to login page
+            response.sendRedirect("http://localhost:3000/login"); // Redirect to login page
         } else {
             // If user doesn't exist, create a new user and store in session
             User newUser = new User();
             System.out.println(
-                email
-            );
+                    email);
             System.out.println(
-                given_name
-            );
+                    given_name);
             System.out.println(
-                last_name
-            );
+                    last_name);
             newUser.setEmail(email); // Set the email
-            newUser.setName(given_name); 
-            newUser.setLastName(last_name);  // Set the name
-           // userRepository.save(newUser);  // Save the new user to the database
+            newUser.setName(given_name);
+            newUser.setLastName(last_name); // Set the name
+            // userRepository.save(newUser); // Save the new user to the database
 
-            session.setAttribute("user", newUser);  // Store the new user in the session
-            response.sendRedirect("http://localhost:3000/complete-profile");  // Redirect to complete profile page
+            session.setAttribute("user", newUser); // Store the new user in the session
+            response.sendRedirect("http://localhost:3000/complete-profile"); // Redirect to complete profile page
         }
     }
 }

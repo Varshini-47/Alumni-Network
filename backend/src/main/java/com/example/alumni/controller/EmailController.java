@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.alumni.model.User;
 import com.example.alumni.service.EmailService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import com.example.alumni.repository.*;
 
