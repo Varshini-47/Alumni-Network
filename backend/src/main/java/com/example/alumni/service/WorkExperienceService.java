@@ -37,4 +37,22 @@ public class WorkExperienceService {
     public void deleteWorkExperience(Long id) {
         workExperienceRepository.deleteById(id);
     }
+    public WorkExperience getWorkExperienceById(Long id) {
+        return workExperienceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Work Experience not found with ID: " + id));
+    }
+    
+
+    public WorkExperience updateWorkExperience(Long id, WorkExperience updatedExperience) {
+        return workExperienceRepository.findById(id).map(existingExperience -> {
+            existingExperience.setStartDate(updatedExperience.getStartDate());
+            existingExperience.setEndDate(updatedExperience.getEndDate());
+            existingExperience.setCompany(updatedExperience.getCompany());
+            existingExperience.setRole(updatedExperience.getRole());
+            existingExperience.setLocation(updatedExperience.getLocation());
+            existingExperience.setDescription(updatedExperience.getDescription());
+            return workExperienceRepository.save(existingExperience);
+        }).orElseThrow(() -> new RuntimeException("Work Experience not found with ID: " + id));
+    }
+    
 }

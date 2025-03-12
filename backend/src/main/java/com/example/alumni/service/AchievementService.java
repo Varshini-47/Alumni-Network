@@ -28,11 +28,28 @@ public class AchievementService {
         return achAchievementRepository.findByUserId(userId);
     }
 
-    public Optional<Achievement> getAchievementById(Long id) {
-        return achAchievementRepository.findById(id);
-    }
-
     public void deleteAchievement(Long id) {
         achAchievementRepository.deleteById(id);
     }
+
+    public Achievement getAchievementById(Long id) {
+        return achAchievementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Achievement not found with ID: " + id));
+    }
+
+    public Achievement updateAchievement(Long id, Achievement updatedAchievement) {
+        Achievement existingAchievement = achAchievementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Achievement not found with ID: " + id));
+    
+        // Update fields
+        existingAchievement.setTitle(updatedAchievement.getTitle());
+        existingAchievement.setDateOfAchievement(updatedAchievement.getDateOfAchievement());
+        existingAchievement.setCategory(updatedAchievement.getCategory());
+        existingAchievement.setDescription(updatedAchievement.getDescription());
+        existingAchievement.setSupportingDocuments(updatedAchievement.getSupportingDocuments());
+        existingAchievement.setOrganization(updatedAchievement.getOrganization());
+    
+        return achAchievementRepository.save(existingAchievement);
+    }
+    
 }

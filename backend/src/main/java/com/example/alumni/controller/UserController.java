@@ -148,8 +148,15 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers()
                 .stream()
-                .filter(user -> !"admin".equalsIgnoreCase(user.getRole())) // Exclude admins
+                .filter(user -> !"admin".equalsIgnoreCase(user.getRole())) 
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/users/{id}/updateProfile")
+    public ResponseEntity<String> updateUserProfile(@PathVariable Long id, @RequestBody User updatedUser) {
+        System.out.println("\n\nEntered update profile\n\n");
+        userService.updateUserProfile(id, updatedUser);
+        return ResponseEntity.ok("Profile updated successfully!");
     }
 
     @PostMapping("/logout")

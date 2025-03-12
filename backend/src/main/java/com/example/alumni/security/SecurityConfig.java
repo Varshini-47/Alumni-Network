@@ -34,7 +34,7 @@ public class SecurityConfig {
                                 "/api/logout", "/api/users/{id}", "/api/users/{id}/updateProfile",
                                 "/api/work-experience/user/{id}", "/api/work-experience", "/api/work-experience/{id}",
                                 "/api/chat", "/api/chat/sendGroupMessage", "/api/chat/groups/{groupId}/messages",
-                                "/chat/group/{groupId}/messages",
+                                "/chat/group/{groupId}/messages","/api/achievements/{id}","/api/work-experience/{id}",
                                 "/api/achievements", "/api/searchchat/users", "/api/searchchat/groups",
                                 "/api/searchchat/groups/{groupId}/members", "/api/achievements/all",
                                 "/api/achievements/user/{id}", "/chat", "/chat/**", "/api/chat/history/{userId}",
@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 "/api/achievements/{id}", "/api/users", "/api/chat/recent/{userId}",
                                 "/api/chat/history/{userId}/{receiverId}", "/api/email/forgot-password",
                                 "/api/email/reset-password", "/api/chat/groups", "/api/chat/groups/{groupId}/join")
-                        .permitAll() // Public access to specific endpoints
+                        .permitAll() 
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable());
 

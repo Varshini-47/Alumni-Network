@@ -36,14 +36,25 @@ public class AchievementController {
         return achieAchievementService.getAchievementsByUserId(id);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Achievement> getWorkExperienceById(@PathVariable Long id) {
+        Achievement achievementExperience = achieAchievementService.getAchievementById(id);
+        return ResponseEntity.ok(achievementExperience);
+    }
+    
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Achievement> updateAchievement(
+            @PathVariable Long id,
+            @RequestBody Achievement updatedAchievement) {
+        Achievement achievement = achieAchievementService.updateAchievement(id, updatedAchievement);
+        return ResponseEntity.ok(achievement);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable Long id) {
-        Optional<Achievement> achievement = achieAchievementService.getAchievementById(id);
-        if (achievement.isPresent()) {
+        Achievement achievement = achieAchievementService.getAchievementById(id);
             achieAchievementService.deleteAchievement(id);
             return ResponseEntity.ok().body("Job deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 }
