@@ -49,5 +49,4 @@ public class WorkExperienceController {
         workExperienceService.deleteWorkExperience(id);
         return ResponseEntity.noContent().build();
     }
-
 }

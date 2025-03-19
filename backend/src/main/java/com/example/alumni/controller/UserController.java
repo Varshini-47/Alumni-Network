@@ -165,4 +165,9 @@ public class UserController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        boolean isDeleted = userService.deleteUserById(id);
+        return isDeleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
 }
