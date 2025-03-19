@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.alumni.model.User;
 import com.example.alumni.service.EmailService;
+
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import com.example.alumni.repository.*;
 
@@ -84,10 +86,41 @@ public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> req
 
     return ResponseEntity.ok("Password updated successfully!");
 }
+@PostMapping("/invite")
+public String sendInvite(@RequestBody InviteRequest inviteRequest) {
+    System.out.println("entered email controller-1");
+    try {
+        System.out.println("entered email controller-2");
+        emailService.sendInvite(inviteRequest.getFromEmail(), inviteRequest.getToEmails(),inviteRequest.getName(), inviteRequest.getRegistrationLink());
+        System.out.println(inviteRequest.getName());
+        int pointsAwarded = inviteRequest.getToEmails().size() * 10;
+       
 
+        
+        return "Invite sent successfully!";
+    } catch (MessagingException e) {
+        return "Failed to send invite: " + e.getMessage();
+    }
+}
 
 }
 
 
+class InviteRequest {
+    private Long userId;
+    private String fromEmail;
+    //private String toEmail;
+    private String name;
+    private List<String> toEmails;
+    private String registrationLink;
+
+    public String getName() {
+        return name;
+    }
+    public Long getUserId() { return userId; }
+    public String getFromEmail() { return fromEmail; }
+    public List<String> getToEmails() { return toEmails; }
+    public String getRegistrationLink() { return registrationLink; }
+}
 
 

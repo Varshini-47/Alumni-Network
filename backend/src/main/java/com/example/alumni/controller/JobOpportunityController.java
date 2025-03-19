@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,14 +28,12 @@ public class JobOpportunityController {
         return jobJobOpportunityService.addJobOpportunity(jobJobOpportunity);
     }
 
-    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable Long id) {
-        Optional<JobOpportunity> job = jobJobOpportunityService.getJobById(id);
-        if (job.isPresent()) {
-            jobJobOpportunityService.deleteJobOpportunity(id);
-            return ResponseEntity.ok().body("Job deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        JobOpportunity job = jobJobOpportunityService.getJobById(id);
+    
+      
+    
+        jobJobOpportunityService.deleteJobOpportunity(id);
+        return ResponseEntity.ok().body("Job deleted successfully");
     }
 }

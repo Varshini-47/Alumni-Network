@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import nitcImage from "../assets/nitc_enhanced.png";
 import achievement from "../assets/achievement.png";
@@ -14,7 +14,11 @@ function Home() {
   const { user, logoutUser } = useUser();
   const [alumni, setAlumni] = useState([]);
   const [events, setEvents] = useState([]);
+  const [emails, setEmails] = useState([""]);
+  const [isSending, setIsSending] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const modalRef = useRef(null);
 
   useEffect(() => {
     fetchAlumni();
@@ -61,6 +65,74 @@ function Home() {
     ];
     const monthAbbr = monthNames[parseInt(month, 10) - 1];
     return { day, monthAbbr };
+  };
+
+  const isValidEmail = (email) => {
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  };
+
+  const addEmailField = () => {
+    if (emails.every((email) => email.trim() !== "" && isValidEmail(email))) {
+      setEmails([...emails, ""]);
+    } else {
+      alert("Please enter a valid email before adding more.");
+    }
+  };
+
+  const handleEmailChange = (index, value) => {
+    const newEmails = [...emails];
+    newEmails[index] = value;
+    setEmails(newEmails);
+  };
+
+  const removeEmailField = (index) => {
+    const newEmails = emails.filter((_, i) => i !== index);
+    setEmails(newEmails);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
+  const sendInvite = async () => {
+    if (emails.every((email) => email.trim() === "")) {
+      alert("Please enter at least one email before sending.");
+      return;
+    }
+    if (!emails.every((email) => isValidEmail(email.trim()))) {
+      alert("Please enter all fields!");
+      return;
+    }
+
+    setIsSending(true);
+    try {
+      await axios.post(
+        "http://localhost:8080/api/email/invite",
+        {
+          userId: user.id,
+          fromEmail: user.email,
+          toEmails: emails,
+          name: user.firstName,
+          registrationLink: "http://localhost:3000/register",
+        },
+        { withCredentials: true }
+      );
+      alert("Invitation sent successfully!");
+      setEmails([""]); // Reset input fields
+      setOpen(false); // Close the invite box
+    } catch (error) {
+      console.error("Error sending invite:", error);
+    } finally {
+      setIsSending(false); // Reset loading state
+    }
   };
 
   return (
@@ -119,9 +191,72 @@ function Home() {
         </div>
       </div>
 
-      <button className="fixed bottom-6 right-6 bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-800 transition transform hover:scale-105">
-        Invite Peers
-      </button>
+      <div className="relative">
+        {/* Invite Button */}
+        <button
+          onClick={() => setOpen(true)}
+          className="fixed bottom-6 right-6 bg-blue-600 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-200"
+        >
+          Invite Peers
+        </button>
+
+        {open && (
+          <div
+            ref={modalRef}
+            className="modal bg-white p-6 rounded-lg shadow-md fixed bottom-16 right-6 w-80 border border-gray-200"
+          >
+            <h3 className="text-lg font-semibold mb-3">Invite Peers</h3>
+
+            {/* Email Input Fields */}
+            {emails.map((email, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => handleEmailChange(index, e.target.value)}
+                  className={`w-full p-2 border rounded ${
+                    email && !isValidEmail(email)
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                />
+                {emails.length > 1 && (
+                  <button
+                    onClick={() => removeEmailField(index)}
+                    className="ml-2 text-red-500 text-xl hover:text-red-700 transition"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+            ))}
+
+            {/* Add More button (only if all fields are valid and filled) */}
+            <button
+              onClick={addEmailField}
+              className="bg-gray-500 text-white px-4 py-2 rounded w-full mb-2 hover:bg-gray-600 transition"
+            >
+              + Add More
+            </button>
+
+            {/* Send Invite button (only if all emails are valid) */}
+            {emails.some((email) => isValidEmail(email.trim())) && (
+              <button
+                onClick={sendInvite}
+                className={`px-4 py-2 rounded w-full mt-2 ${
+                  isSending
+                    ? "bg-blue-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600 transition"
+                }`}
+                // disabled={isSending || !emails.every(email => isValidEmail(email.trim()))}
+              >
+                {isSending ? "Sending Invitation..." : "Send Invite"}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
 
       <div className="container mx-auto px-20 py-12 grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl">
         <div className="bg-blue-100 p-6 rounded-lg shadow-lg">

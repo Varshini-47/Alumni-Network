@@ -27,8 +27,9 @@ public class JobOpportunityService {
         return achJobOpportunityRepository.findByUserId(userId);
     }
 
-    public Optional<JobOpportunity> getJobById(Long id) {
-        return achJobOpportunityRepository.findById(id);
+    public JobOpportunity getJobById(Long id) {
+        return achJobOpportunityRepository.findById(id)
+              .orElse(null);
     }
 
     public void deleteJobOpportunity(Long id) {

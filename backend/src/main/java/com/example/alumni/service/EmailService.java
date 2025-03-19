@@ -23,4 +23,23 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    public void sendInvite(String fromEmail, List<String> toEmails,String name, String registrationLink) throws MessagingException {
+        System.out.println("entered email service-1");
+
+        for (String toEmail : toEmails) {
+            if (toEmail == null || toEmail.trim().isEmpty()) continue; // Skip empty emails
+            
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setFrom(fromEmail);
+            helper.setTo(toEmail);
+            helper.setSubject("Join the Alumni Network!");
+            //helper.setText("Click the link to register: " + registrationLink, true);
+            helper.setText("<p><b>" + name + "</b> invited you to join the Alumni Network!</p>"
+              + "<p>Click the link to register: <a href='" + registrationLink + "'>" + registrationLink + "</a></p>",true);
+            mailSender.send(message);
+            System.out.println("Invite sent to: " + toEmail);
+        }
+    }
 }
