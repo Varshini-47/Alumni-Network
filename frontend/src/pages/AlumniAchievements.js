@@ -18,7 +18,9 @@ const AlumniAchievements = () => {
     const fetchAchievements = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/api/achievements/user/${alumniId}`, { withCredentials: true });
-        setAchievements(response.data);
+        const achievementsArray = Array.isArray(response.data) ? response.data.reverse() : [response.data];
+        setAchievements(achievementsArray);
+        // setAchievements(response.data);
       } catch (error) {
         console.error("Error fetching achievements:", error);
         setError("Failed to fetch achievements.");
@@ -32,7 +34,7 @@ const AlumniAchievements = () => {
 
   const handleDelete = async (achievementId) => {
     if (!window.confirm("Are you sure you want to delete this achievement experience?")) return;
-
+    
     try {
       await axios.delete(`http://localhost:8080/api/achievements/${achievementId}`, { withCredentials: true });
       setAchievements(achievements.filter(achievement => achievement.id !== achievementId));
@@ -43,7 +45,7 @@ const AlumniAchievements = () => {
   };
 
   const handleEdit = (achievementId) => {
-    navigate(`/edit-achievement/${achievementId}`);
+    navigate(`/edit-achievement/${achievementId}`); // Redirect to edit page (customize this route as needed)
   };
 
   if (loading) return <p className="text-center text-gray-600">Loading achievements...</p>;
@@ -53,6 +55,7 @@ const AlumniAchievements = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
       <h2 className="text-4xl font-bold mb-6 text-gray-900">Achievements</h2>
 
+      {/* Wrapper Box with Background Color */}
       <div className="bg-blue-100 p-6 rounded-xl shadow-lg w-full max-w-7xl">
         {achievements.length === 0 ? (
           <p className="text-gray-600 text-center">No achievements found for this alumni.</p>
@@ -63,7 +66,7 @@ const AlumniAchievements = () => {
                 key={achievement.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
               >
-
+                {/* Image Section */}
                 {achievement.supportingDocuments && (
                   <img
                     src={achievement.supportingDocuments}
@@ -72,6 +75,7 @@ const AlumniAchievements = () => {
                   />
                 )}
 
+                {/* Content Section */}
                 <div className="p-5">
                   <h3 className="text-2xl font-semibold text-gray-900">{achievement.title}</h3>
                   <p className="text-gray-600 text-sm mb-2">{achievement.category}</p>

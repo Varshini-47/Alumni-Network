@@ -1,93 +1,80 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { FaBuilding, FaUserTie, FaMapMarkerAlt, FaCalendarAlt, FaTrash } from "react-icons/fa";
 
 const WorkExperienceList = () => {
-  const [workExperiences, setWorkExperiences] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [workExperiences, setWorkExperiences] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchWorkExperiences();
-  }, []);
+    useEffect(() => {
+        fetchWorkExperiences();
+    }, []);
 
-  const fetchWorkExperiences = () => {
-    axios
-      .get("http://localhost:8080/api/work-experience", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setWorkExperiences(response.data);
-        console.log(response.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Failed to fetch work experiences");
-        setLoading(false);
-      });
-  };
+    const fetchWorkExperiences = () => {
+        axios.get("http://localhost:8080/api/work-experience", { withCredentials: true })
+            .then(response => {
+                setWorkExperiences(response.data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setError("Failed to fetch work experiences");
+                setLoading(false);
+            });
+    };
 
-  const deleteWorkExperience = (id) => {
-    axios
-      .delete(`http://localhost:8080/api/work-experience/${id}`, {
-        withCredentials: true,
-      })
-      .then(() => {
-        setWorkExperiences(workExperiences.filter((exp) => exp.id !== id));
-      })
-      .catch(() => {
-        alert("Failed to delete work experience.");
-      });
-  };
+    const deleteWorkExperience = (id) => {
+        axios.delete(`http://localhost:8080/api/work-experience/${id}`, { withCredentials: true })
+            .then(() => {
+                setWorkExperiences(workExperiences.filter(exp => exp.id !== id));
+            })
+            .catch(() => {
+                alert("Failed to delete work experience.");
+            });
+    };
 
-  if (loading)
+    if (loading) return <div className="text-center text-gray-600 mt-10">Loading...</div>;
+    if (error) return <div className="text-red-500 text-center mt-10">{error}</div>;
+
     return (
-      <div className="flex justify-center mt-10 text-gray-500">Loading...</div>
-    );
-  if (error)
-    return <div className="text-red-500 text-center mt-10">{error}</div>;
+        <div className="max-w-6xl mx-auto p-6 bg-gray-100 min-h-screen">
+            <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Alumni Work Experiences</h2>
 
-  return (
-    <div className="max-w-6xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">
-        Alumni Work Experiences
-      </h2>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Company</th>
-              <th className="border p-2">Role</th>
-              <th className="border p-2">Location</th>
-              <th className="border p-2">Start Date</th>
-              <th className="border p-2">End Date</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {workExperiences.map((exp) => (
-              <tr key={exp.id} className="border-b hover:bg-gray-50">
-                <td className="border p-2">{exp.user.name}</td>
-                <td className="border p-2">{exp.company}</td>
-                <td className="border p-2">{exp.role}</td>
-                <td className="border p-2">{exp.location}</td>
-                <td className="border p-2">{exp.startDate}</td>
-                <td className="border p-2">{exp.endDate || "Present"}</td>
-                <td className="border p-2 text-center">
-                  <button
-                    onClick={() => deleteWorkExperience(exp.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+            {workExperiences.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {workExperiences.map((work) => (
+                        <div key={work.id} className="bg-white p-5 rounded-xl shadow-lg relative transition-all hover:shadow-2xl">
+                            <h3 className="text-2xl font-semibold flex items-center gap-2 text-gray-900">
+                                <FaBuilding className="text-blue-600" /> {work.company}
+                            </h3>
+                            <p className="text-gray-600 flex items-center gap-2">
+                                <FaUserTie className="text-green-600" /> {work.role}
+                            </p>
+                            <p className="text-gray-500 flex items-center gap-2">
+                                <FaMapMarkerAlt className="text-red-500" /> {work.location}
+                            </p>
+                            <p className="text-gray-500 flex items-center gap-2">
+                                <FaCalendarAlt className="text-yellow-500" /> {new Date(work.startDate).toLocaleDateString()} - 
+                                {work.present ? "Present" : new Date(work.endDate).toLocaleDateString()}
+                            </p>
+                            <p className="mt-3 text-gray-700">{work.description}</p>
+
+                            {/* Delete Button */}
+                            <button
+                                onClick={() => deleteWorkExperience(work.id)}
+                                className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full hover:bg-red-700 transition"
+                            >
+                                <FaTrash size={16} />
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p className="text-gray-600 text-center mt-6">No work experience added yet.</p>
+            )}
+        </div>
+    );
 };
 
 export default WorkExperienceList;
