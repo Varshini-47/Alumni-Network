@@ -1,6 +1,7 @@
 package com.example.alumni.controller;
 
 import com.example.alumni.model.WorkExperience;
+import com.example.alumni.service.UserPointsService;
 import com.example.alumni.service.WorkExperienceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,14 @@ import java.util.List;
 public class WorkExperienceController {
 
     @Autowired
+    private UserPointsService userPointsService;
+
+    @Autowired
     private WorkExperienceService workExperienceService;
 
     @PostMapping
     public WorkExperience addWorkExperience(@RequestBody WorkExperience workExperience) {
+        userPointsService.addPoints(workExperience.getUser().getId(), 10);
         return workExperienceService.addWorkExperience(workExperience);
     }
 
@@ -46,6 +51,8 @@ public class WorkExperienceController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWorkExperience(@PathVariable Long id) {
+        WorkExperience wa = workExperienceService.getWorkExperienceById(id);
+        userPointsService.addPoints(wa.getUser().getId(), -10);
         workExperienceService.deleteWorkExperience(id);
         return ResponseEntity.noContent().build();
     }

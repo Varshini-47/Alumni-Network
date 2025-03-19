@@ -4,6 +4,8 @@ import com.example.alumni.dto.AchievementDTO;
 import com.example.alumni.model.Achievement;
 import com.example.alumni.repository.AchievementRepository;
 import com.example.alumni.service.AchievementService;
+import com.example.alumni.service.UserPointsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,8 @@ import java.util.Optional;
 @RequestMapping("/api/achievements")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AchievementController {
-
+@Autowired
+    private UserPointsService userPointsService;
     @Autowired
     private AchievementService achieAchievementService;
     @Autowired
@@ -28,6 +31,7 @@ public class AchievementController {
 
     @PostMapping
     public Achievement addAchievement(@RequestBody Achievement achieAchievement) {
+        userPointsService.addPoints(achieAchievement.getUserId(), 10);
         return achieAchievementService.addAchievement(achieAchievement);
     }
 
@@ -54,6 +58,7 @@ public class AchievementController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable Long id) {
         Achievement achievement = achieAchievementService.getAchievementById(id);
+        userPointsService.addPoints(achievement.getUserId(), -10);
             achieAchievementService.deleteAchievement(id);
             return ResponseEntity.ok().body("Job deleted successfully");
     }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.alumni.model.User;
 import com.example.alumni.service.EmailService;
+import com.example.alumni.service.UserPointsService;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +27,9 @@ public class EmailController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserPointsService userPointsService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -94,9 +98,7 @@ public String sendInvite(@RequestBody InviteRequest inviteRequest) {
         emailService.sendInvite(inviteRequest.getFromEmail(), inviteRequest.getToEmails(),inviteRequest.getName(), inviteRequest.getRegistrationLink());
         System.out.println(inviteRequest.getName());
         int pointsAwarded = inviteRequest.getToEmails().size() * 10;
-       
-
-        
+        userPointsService.addPoints(inviteRequest.getUserId(), pointsAwarded);
         return "Invite sent successfully!";
     } catch (MessagingException e) {
         return "Failed to send invite: " + e.getMessage();

@@ -180,14 +180,12 @@ function Home() {
             alt="Leaderboard"
             className="w-full h-40 object-cover"
           />
+          <div className="group relative flex flex-col items-center w-[250px] shadow-lg rounded-lg overflow-hidden bg-white transform transition duration-300 hover:scale-105">
+          <img src={leaderboard} alt="Leaderboard" className="w-full h-40 object-cover" />
           <div className="bg-gray-300 w-full py-4 flex justify-center group-hover:bg-purple-600 transition">
-            <Link
-              to={"/leaderboard"}
-              className="text-xl font-semibold text-center text-gray-800 group-hover:text-white"
-            >
-              Leaderboard
-            </Link>
+            <Link to={'/leaderboard'} className="text-xl font-semibold text-center text-gray-800 group-hover:text-white">Leaderboard</Link>
           </div>
+        </div>
         </div>
       </div>
 
@@ -215,11 +213,10 @@ function Home() {
                   placeholder="Enter email"
                   value={email}
                   onChange={(e) => handleEmailChange(index, e.target.value)}
-                  className={`w-full p-2 border rounded ${
-                    email && !isValidEmail(email)
+                  className={`w-full p-2 border rounded ${email && !isValidEmail(email)
                       ? "border-red-500"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 />
                 {emails.length > 1 && (
                   <button
@@ -244,12 +241,11 @@ function Home() {
             {emails.some((email) => isValidEmail(email.trim())) && (
               <button
                 onClick={sendInvite}
-                className={`px-4 py-2 rounded w-full mt-2 ${
-                  isSending
+                className={`px-4 py-2 rounded w-full mt-2 ${isSending
                     ? "bg-blue-500 cursor-not-allowed"
                     : "bg-blue-500 text-white hover:bg-blue-600 transition"
-                }`}
-                // disabled={isSending || !emails.every(email => isValidEmail(email.trim()))}
+                  }`}
+              // disabled={isSending || !emails.every(email => isValidEmail(email.trim()))}
               >
                 {isSending ? "Sending Invitation..." : "Send Invite"}
               </button>

@@ -85,7 +85,7 @@ function Header() {
           <Link to="/about" className="hover:text-blue-700 transition">
             About Us
           </Link>
-          <Link to="/alumni" className="hover:text-blue-700 transition">
+          <Link to="/leaderboard" className="hover:text-blue-700 transition">
             Featured Alumni
           </Link>
           <Link to="/events" className="hover:text-blue-700 transition">

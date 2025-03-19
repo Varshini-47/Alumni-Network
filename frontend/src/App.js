@@ -3,8 +3,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import GoogleRegister from "./loginComponents/GoogleRegister";
 import CompleteProfile from "./loginComponents/CompleteProfile";
-import "./index.css";
-import "./App.css";
+import './index.css';
+import './App.css';
 import Home from "./pages/Home";
 import LinkedinRegister from "./loginComponents/LinkedinRegister";
 import About from "./pages/About";
@@ -23,48 +23,47 @@ import AlumniList from "./pages/Alumni";
 import Gallery from "./pages/Gallery";
 import Events from "./pages/Events";
 import UpdateProfile from "./pages/UpdateProfile";
+import SearchResults from "./pages/SearchResults";
 import EditWorkExperienceForm from "./pages/EditWorkExperienceForm";
 import EditAchievementForm from "./pages/EditAchievementForm";
-import SearchResults from "./pages/SearchResults";
-
+import Leaderboard from "./pages/Leaderboard";
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/google-register" element={<GoogleRegister />} />
-      <Route path="/linkedin-register" element={<LinkedinRegister />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/complete-profile" element={<CompleteProfile />} />
-      <Route path="/admin-dashboard" element={<AdminDashboard />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/profile/:id" element={<Profile />} />
-      <Route path="/add-work-experience" element={<AddWorkExperience />} />
-      <Route path="/add-achievements" element={<AchievementsForm />} />
-      <Route path="/job-opportunities" element={<JobOpportunities />} />
-      <Route path="/achievements" element={<AchievementsList />} />
-      <Route
-        path="/alumni/:alumniId/achievements"
-        element={<AlumniAchievements />}
-      />
-      <Route
-        path="/alumni/:alumniId/workexperience"
-        element={<AlumniWorkExp />}
-      />
-      {/* <Route path="/admin-dashboard" element={<Dashboard />} /> */}
-      <Route path="/achievements" element={<AchievementsList />} />
-      <Route path="/alumni" element={<AlumniList />} />
-      <Route path="/work-experience" element={<WorkExperienceList />} />
-      <Route path="/gallery" element={<Gallery />} />
-      <Route path="/events" element={<Events />} />
-      <Route path="/search" element={<SearchResults />} />
-      <Route path="/update-profile" element={<UpdateProfile/>}/>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/google-register" element={<GoogleRegister />} />
+        <Route path="/linkedin-register" element={<LinkedinRegister />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+       
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/complete-profile" element={<CompleteProfile/>}/>
+        <Route path="/admin-dashboard" element={<AdminDashboard/>}/>
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/add-work-experience" element={<AddWorkExperience />} />
+        <Route path="/add-achievements" element={<AchievementsForm />} />
+        <Route path="/job-opportunities" element={<JobOpportunities />} />
+        <Route path="/achievements" element={<AchievementsList />} />
+        <Route path="/alumni/:alumniId/achievements" element={<AlumniAchievements />} />
+        <Route path="/alumni/:alumniId/workexperience" element={<AlumniWorkExp />} />
+        {/* <Route path="/admin-dashboard" element={<Dashboard />} /> */}
+        <Route path="/achievements" element={<AchievementsList />} />
+        <Route path="/alumni" element={<AlumniList />} />
+        <Route path="/work-experience" element={<WorkExperienceList />} />
+        <Route path="/gallery" element={<Gallery/>}/>
+        <Route path="/events" element={<Events />} />
+        <Route path="/search" element={<SearchResults />} />
+        <Route path="/update-profile" element={<UpdateProfile/>}/>
         <Route path="/edit-work/:id" element={<EditWorkExperienceForm/>}/>
         <Route path="/edit-achievement/:id" element={<EditAchievementForm/>}/>
-    </Routes>
+      </Routes>
+    
+   
   );
 }
 
 export default App;
+
