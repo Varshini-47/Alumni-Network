@@ -28,7 +28,7 @@ import EditWorkExperienceForm from "./pages/EditWorkExperienceForm";
 import EditAchievementForm from "./pages/EditAchievementForm";
 import Leaderboard from "./pages/Leaderboard";
 import Chat from "./pages/Chat";
-// import GroupChat from "./pages/GroupChat";
+import GroupChat from "./pages/GroupChat";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
@@ -56,7 +56,7 @@ function App() {
         <Route path="/achievements" element={<AchievementsList />} />
         <Route path="/alumni/:alumniId/achievements" element={<AlumniAchievements />} />
         <Route path="/alumni/:alumniId/workexperience" element={<AlumniWorkExp />} />
-        {/* <Route path="/admin-dashboard" element={<Dashboard />} /> */}
+        <Route path="/admin-dashboard" element={<Dashboard />} />
         <Route path="/achievements" element={<AchievementsList />} />
         <Route path="/alumni" element={<AlumniList />} />
         <Route path="/work-experience" element={<WorkExperienceList />} />
@@ -67,7 +67,7 @@ function App() {
         <Route path="/edit-work/:id" element={<EditWorkExperienceForm/>}/>
         <Route path="/edit-achievement/:id" element={<EditAchievementForm/>}/>
         <Route path="/chat" element={<Chat/>}/>
-        {/* <Route path="/group-chat" element={<GroupChat/>}/> */}
+        <Route path="/group-chat" element={<GroupChat/>}/>
       </Routes>
       <ToastContainer
         position="top-right"
