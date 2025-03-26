@@ -41,9 +41,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/google-register" element={<GoogleRegister />} />
-       
         <Route path="/leaderboard" element={<Leaderboard />} />
-       
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/complete-profile" element={<CompleteProfile/>}/>

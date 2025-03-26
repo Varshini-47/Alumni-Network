@@ -4,10 +4,12 @@ import {
   FaTwitter,
   FaLinkedinIn,
 } from "react-icons/fa";
+
 function Footer() {
   return (
     <footer className="bg-blue-200 shadow-lg text-black py-8 mt-auto">
       <div className="container mx-auto text-center px-6">
+        {/* Social Links */}
         <div className="flex justify-center space-x-6 mb-4">
           <a
             href="https://m.facebook.com/NIT.Calicut.Kerala/"
@@ -35,6 +37,7 @@ function Footer() {
           </a>
         </div>
 
+        {/* Copyright */}
         <p className="text-sm text-gray-800">
           © 2025 NIT Calicut. All rights reserved.
         </p>

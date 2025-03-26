@@ -3,7 +3,9 @@ import { useUser } from "../UserContext";
 import axios from "axios";
 import nitcLogo from "../assets/nitclogo.jpeg";
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaSignOutAlt } from "react-icons/fa";
+import userImg from "../assets/user.webp";
+import { toast } from "react-toastify";
 
 function Header() {
   const { user, logoutUser } = useUser();
@@ -21,33 +23,50 @@ function Header() {
         { withCredentials: true }
       );
       logoutUser();
+      toast.success("You have successfully logged out!");
       navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
+      toast.error("Logout failed. Please try again.");
     }
   };
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
-      alert("Please enter a search query.");
+      toast.warning("Please enter a search query.");
       return;
     }
 
+    // Construct search parameters
     const searchParams = new URLSearchParams({
       type: searchType.toLowerCase().replace(" ", "_"),
       query: searchQuery,
     });
 
+    // Navigate to search results page
     navigate(`/search?${searchParams.toString()}`);
 
+    // Clear input after search
     setSearchQuery("");
   };
 
+  // Add this function to handle key press events for search
+  const handleSearchKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   const isProfilePage = user && location.pathname === `/profile/${user.id}`;
+  const isActive = (path) =>
+    location.pathname === path
+      ? "bg-blue-500 text-white px-5 py-2 rounded-md"
+      : "hover:text-blue-900 transition rounded-md";
 
   return (
     <nav className="bg-blue-200 shadow-lg p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
+        {/* Left Side: Logo & Title */}
         <div className="flex items-center space-x-3">
           <img src={nitcLogo} alt="NITC Logo" className="h-10 w-10" />
           <Link to="/" className="text-xl font-bold text-blue-700">
@@ -55,6 +74,7 @@ function Header() {
           </Link>
         </div>
 
+        {/* 🔍 Stylish Search Bar */}
         <div className="flex items-center border border-gray-300 rounded-full px-3 py-2 bg-gray-100 shadow-md">
           <select
             className="bg-transparent text-gray-700 text-sm font-medium focus:outline-none cursor-pointer"
@@ -71,6 +91,7 @@ function Header() {
             className="ml-2 px-3 py-1 bg-transparent focus:outline-none w-40 text-sm"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleSearchKeyPress}
           />
           <button
             onClick={handleSearch}
@@ -81,20 +102,21 @@ function Header() {
           </button>
         </div>
 
+        {/* Right Side: Links & User Actions */}
         <div className="flex items-center space-x-6 text-gray-600">
-          <Link to="/about" className="hover:text-blue-700 transition">
+          <Link to="/about" className={isActive("/about")}>
             About Us
           </Link>
-          <Link to="/leaderboard" className="hover:text-blue-700 transition">
+          <Link to="/leaderboard" className={isActive("/leaderboard")}>
             Featured Alumni
           </Link>
-          <Link to="/events" className="hover:text-blue-700 transition">
+          <Link to="/events" className={isActive("/events")}>
             Events
           </Link>
-          <Link to="/gallery" className="hover:text-blue-700 transition">
+          <Link to="/gallery" className={isActive("/gallery")}>
             Gallery
           </Link>
-          <Link to="/contact" className="hover:text-blue-700 transition">
+          <Link to="/contact" className={isActive("/contact")}>
             Contact
           </Link>
 
@@ -115,19 +137,14 @@ function Header() {
             </div>
           ) : (
             <div className="flex items-center space-x-4">
-              {!isProfilePage && (
+              {!isProfilePage && user.role === "ALUMNI" && (
                 <img
-                  src={user.imageUrl}
+                  src={user.imageUrl || userImg}
                   alt="User Profile"
                   className="h-10 w-10 rounded-full object-cover"
                 />
               )}
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-md shadow hover:bg-red-700 transition"
-              >
-                Logout
-              </button>
+
               {!isProfilePage && user.role === "ALUMNI" && (
                 <Link
                   to={`/profile/${user.id}`}
@@ -136,7 +153,7 @@ function Header() {
                   View Profile
                 </Link>
               )}
-              {user.role === "ADMIN" && (
+              {user.role === "admin" && (
                 <Link
                   to="/admin-dashboard"
                   className="px-4 py-2 bg-blue-700 text-white rounded-md shadow hover:bg-blue-800 transition"
@@ -144,6 +161,14 @@ function Header() {
                   Admin Dashboard
                 </Link>
               )}
+
+              <button
+                onClick={handleLogout}
+                className="flex items-center justify-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-sm hover:bg-red-700 transition"
+              >
+                <FaSignOutAlt />
+                <span>Logout</span>
+              </button>
             </div>
           )}
         </div>

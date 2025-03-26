@@ -14,7 +14,7 @@ const ForgotPassword = () => {
         "http://localhost:8080/api/forgot-password",
         { email }
       );
-      setMessage(response.data);
+      setMessage(response.data); // Success message from backend
     } catch (error) {
       setMessage("Error: Unable to send reset email.");
     }
