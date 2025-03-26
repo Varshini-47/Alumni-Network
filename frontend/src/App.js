@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import GoogleRegister from "./loginComponents/GoogleRegister";
@@ -6,7 +6,7 @@ import CompleteProfile from "./loginComponents/CompleteProfile";
 import './index.css';
 import './App.css';
 import Home from "./pages/Home";
-import LinkedinRegister from "./loginComponents/LinkedinRegister";
+
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ResetPassword from "./ResetPassword";
@@ -27,14 +27,21 @@ import SearchResults from "./pages/SearchResults";
 import EditWorkExperienceForm from "./pages/EditWorkExperienceForm";
 import EditAchievementForm from "./pages/EditAchievementForm";
 import Leaderboard from "./pages/Leaderboard";
+import Chat from "./pages/Chat";
+// import GroupChat from "./pages/GroupChat";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
 function App() {
   return (
+    <>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/google-register" element={<GoogleRegister />} />
-        <Route path="/linkedin-register" element={<LinkedinRegister />} />
+       
         <Route path="/leaderboard" element={<Leaderboard />} />
        
         <Route path="/about" element={<About />} />
@@ -59,9 +66,28 @@ function App() {
         <Route path="/update-profile" element={<UpdateProfile/>}/>
         <Route path="/edit-work/:id" element={<EditWorkExperienceForm/>}/>
         <Route path="/edit-achievement/:id" element={<EditAchievementForm/>}/>
+        <Route path="/chat" element={<Chat/>}/>
+        {/* <Route path="/group-chat" element={<GroupChat/>}/> */}
       </Routes>
-    
-   
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={3}
+        enableMultiContainer={false}
+        aria-live="polite"
+        aria-atomic="true"
+        aria-relevant="additions text"
+        aria-label="Notifications"
+      />
+    </>
   );
 }
 
