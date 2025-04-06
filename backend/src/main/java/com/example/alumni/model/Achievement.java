@@ -34,14 +34,17 @@ public class Achievement {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String supportingDocuments;
+    private String supportingDocuments; // File path or URL
 
     private String organization;
 
+    private String achievedBy;
+
+  
     // Constructors
     public Achievement() {}
 
-    public Achievement(String title, LocalDate dateOfAchievement,Long userId, String email,String category, String description, String supportingDocuments, String organization) {
+    public Achievement(String title, LocalDate dateOfAchievement,Long userId, String email,String category, String description, String supportingDocuments, String organization,String achievedBy) {
         this.title = title;
         this.dateOfAchievement = dateOfAchievement;
         this.userId=userId;
@@ -49,6 +52,7 @@ public class Achievement {
         this.description = description;
         this.supportingDocuments = supportingDocuments;
         this.organization = organization;
+        this.achievedBy= achievedBy;
     }
 
     // Getters and Setters
@@ -78,6 +82,15 @@ public class Achievement {
 
     public String getCategory() {
         return category;
+    }
+
+
+    public String getAchievedBy() {
+        return achievedBy;
+    }
+
+    public void setAchievedBy(String achievedBy) {
+        this.achievedBy = achievedBy;
     }
 
     public void setCategory(String category) {
