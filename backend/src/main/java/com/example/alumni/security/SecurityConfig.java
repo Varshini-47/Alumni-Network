@@ -57,7 +57,10 @@ public class SecurityConfig {
                                 "/api/chat/groups/recent/{userId}","api/chat/groupMessageUpdate","api/chat/groupMessageDelete",
                                 "/api/chat/history/{userId}/{receiverId}", "api/email/forgot-password",
                                 "api/email/reset-password", "/api/searchchat", "/api/searchchat/users","/api/chat/messageUpdate","/api/chat/messageDelete",
-                                "/api/searchchat/groups", "/api/searchchat/groups/{groupId}/members")
+                                "/api/searchchat/groups", "/api/searchchat/groups/{groupId}/members",
+                                "/api/connections/send/{senderId}/{receiverId}", "/api/connections/pending/{userId}",
+                                "/api/connections/accept/{requestId}", "/api/connections/reject/{connectionId}",
+                                "/api/connections/accepted/{userId}", "/api/connections/rejected/{userId}","/api/connections/user/{userId}")
                         .permitAll() // Public access to specific endpoints
                         .anyRequest().authenticated() // Secure all other requests
                 ).csrf(csrf -> csrf.disable());
