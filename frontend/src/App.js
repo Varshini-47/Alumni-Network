@@ -3,12 +3,12 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import GoogleRegister from "./loginComponents/GoogleRegister";
 import CompleteProfile from "./loginComponents/CompleteProfile";
-import './index.css';
-import './App.css';
+import "./index.css";
+import "./App.css";
 import Home from "./pages/Home";
-
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Connections from "./pages/Connections";
 import ResetPassword from "./ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
@@ -29,43 +29,49 @@ import EditAchievementForm from "./pages/EditAchievementForm";
 import Leaderboard from "./pages/Leaderboard";
 import Chat from "./pages/Chat";
 import GroupChat from "./pages/GroupChat";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/google-register" element={<GoogleRegister />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/connections" element={<Connections />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/complete-profile" element={<CompleteProfile/>}/>
-        <Route path="/admin-dashboard" element={<AdminDashboard/>}/>
+        <Route path="/complete-profile" element={<CompleteProfile />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/add-work-experience" element={<AddWorkExperience />} />
         <Route path="/add-achievements" element={<AchievementsForm />} />
         <Route path="/job-opportunities" element={<JobOpportunities />} />
         <Route path="/achievements" element={<AchievementsList />} />
-        <Route path="/alumni/:alumniId/achievements" element={<AlumniAchievements />} />
-        <Route path="/alumni/:alumniId/workexperience" element={<AlumniWorkExp />} />
-        <Route path="/admin-dashboard" element={<Dashboard />} />
+        <Route
+          path="/alumni/:alumniId/achievements"
+          element={<AlumniAchievements />}
+        />
+        <Route
+          path="/alumni/:alumniId/workexperience"
+          element={<AlumniWorkExp />}
+        />
         <Route path="/achievements" element={<AchievementsList />} />
         <Route path="/alumni" element={<AlumniList />} />
         <Route path="/work-experience" element={<WorkExperienceList />} />
-        <Route path="/gallery" element={<Gallery/>}/>
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/events" element={<Events />} />
         <Route path="/search" element={<SearchResults />} />
-        <Route path="/update-profile" element={<UpdateProfile/>}/>
-        <Route path="/edit-work/:id" element={<EditWorkExperienceForm/>}/>
-        <Route path="/edit-achievement/:id" element={<EditAchievementForm/>}/>
-        <Route path="/chat" element={<Chat/>}/>
-        <Route path="/group-chat" element={<GroupChat/>}/>
+        <Route path="/update-profile" element={<UpdateProfile />} />
+        <Route path="/edit-work/:id" element={<EditWorkExperienceForm />} />
+        <Route path="/edit-achievement/:id" element={<EditAchievementForm />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/group-chat" element={<GroupChat />} />
       </Routes>
       <ToastContainer
         position="top-right"
@@ -90,4 +96,3 @@ function App() {
 }
 
 export default App;
-

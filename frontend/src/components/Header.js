@@ -107,8 +107,8 @@ function Header() {
           <Link to="/about" className={isActive("/about")}>
             About Us
           </Link>
-          <Link to="/leaderboard" className={isActive("/leaderboard")}>
-            Featured Alumni
+          <Link to="/connections" className={isActive("/connections")}>
+            Connections
           </Link>
           <Link to="/events" className={isActive("/events")}>
             Events
